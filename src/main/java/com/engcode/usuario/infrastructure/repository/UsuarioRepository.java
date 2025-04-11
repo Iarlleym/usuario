@@ -1,7 +1,7 @@
-package infrastructure.repository;
+package com.engcode.usuario.infrastructure.repository;
 
 
-import infrastructure.entity.Usuario;
+import com.engcode.usuario.infrastructure.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

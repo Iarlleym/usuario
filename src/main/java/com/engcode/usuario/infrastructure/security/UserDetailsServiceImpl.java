@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-
+//ADICIONAR AKI SÒ para MANDAR NO GIT
 
 
     // Implementação do método para carregar detalhes do usuário pelo e-mail

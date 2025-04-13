@@ -1,10 +1,16 @@
 package com.engcode.usuario.business;
 
 import com.engcode.usuario.business.converter.UsuarioConverter;
+import com.engcode.usuario.business.dto.EnderecoDTO;
+import com.engcode.usuario.business.dto.TelefoneDTO;
 import com.engcode.usuario.business.dto.UsuarioDTO;
+import com.engcode.usuario.infrastructure.entity.Endereco;
+import com.engcode.usuario.infrastructure.entity.Telefone;
 import com.engcode.usuario.infrastructure.entity.Usuario;
 import com.engcode.usuario.infrastructure.exceptions.ConflictException;
 import com.engcode.usuario.infrastructure.exceptions.ResourceNotFoundException;
+import com.engcode.usuario.infrastructure.repository.EnderecoRepository;
+import com.engcode.usuario.infrastructure.repository.TelefoneRepository;
 import com.engcode.usuario.infrastructure.repository.UsuarioRepository;
 import com.engcode.usuario.infrastructure.security.JwtUtil;
 import lombok.AllArgsConstructor;
@@ -21,6 +27,8 @@ public class UsuarioService {
     private final UsuarioConverter usuarioConverter;
     private final PasswordEncoder passwordEncoder; //Responsavel por fazer a encriptação das senhas
     private final JwtUtil jwtUtil;
+    private final EnderecoRepository enderecoRepository;
+    private final TelefoneRepository telefoneRepository;
 
     //Os DTO são criados para não expor os dados da entidade, por isso usase os UsuarioDTO, EnderecoDTO e TelefoneDTO
     //CRIANDO O METODO DE SALVAR OS DADOS DO USUÁRIO.
@@ -55,9 +63,18 @@ public class UsuarioService {
         return usuarioRepository.existsByEmail(email);
     }
 
-   //metodo para buscarUsuarioPorEmail
-    public Usuario buscarUsuarioPorEmail (String email) {
-        return usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado. " + email));
+   //metodo para buscarUsuarioPorEmail na entity e converte para UsuarioDTO.
+    public UsuarioDTO buscarUsuarioPorEmail (String email) {
+        try {
+
+            return usuarioConverter.paraUsuarioDTO(
+                    usuarioRepository.findByEmail(email)
+                            .orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado. " + email))
+            );
+
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException("E-mail não encontrado. " + email);
+        }
     }
 
     //metodo para deletarUsuarioPorEmail
@@ -86,6 +103,35 @@ public class UsuarioService {
         //salvou os dados do usuario e depois converteu para UsuarioDTO.
         return usuarioConverter.paraUsuarioDTO(usuarioRepository.save(usuario));
 
+    }
+
+    //Metodo para atualizar os dados de endereço
+
+    public EnderecoDTO atualizaEndereco (Long idEndereco, EnderecoDTO enderecoDTO) {
+
+        //Faz a busca pelo id passado, o findById jã é um metodo pronto do JPA.
+        Endereco enderecoEntity  = enderecoRepository.findById(idEndereco).orElseThrow(()  -> new ResourceNotFoundException("Id não encontrado. " + idEndereco)) ;
+
+        //Chama o metodo criado na UsuarioConverter para atualizar os dados de endereço.
+        Endereco endereco = usuarioConverter.upDateDeEndereco(enderecoDTO, enderecoEntity );
+
+        //retorna chamndo o metodo para converter de entity para dto salvando os dados de endereço.
+        return  usuarioConverter.paraEnderecoDTO(enderecoRepository.save(endereco)) ;
+
+    }
+
+    //Metodo para atualizar os dados do telefone
+
+    public TelefoneDTO atualizaTelefone (Long idTelefone, TelefoneDTO telefoneDTO) {
+
+       //Faz a busca pelo id passado, o findById jã é um metodo pronto do JPA.
+        Telefone telefoneEntity = telefoneRepository.findById(idTelefone).orElseThrow(() -> new ResourceNotFoundException("Id não encontrado. " + idTelefone));
+
+        //Chama o metodo criado na UsuarioConverter para atualizar os dados de telefone.
+        Telefone telefone = usuarioConverter.upDataDeTelefone(telefoneDTO, telefoneEntity);
+
+        //retorna chamndo o metodo para converter de entity para dto salvando os dados de Telefone.
+        return  usuarioConverter.paraTelefoneDTO(telefoneRepository.save(telefone));
 
     }
 

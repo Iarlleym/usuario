@@ -12,7 +12,7 @@ public class EnderecoDTO {
 
     private long id;
     private String rua;
-    private long numero;
+    private Long numero;
     private String complemento;
     private String cidade;
     private String estado;

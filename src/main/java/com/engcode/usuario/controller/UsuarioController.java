@@ -1,6 +1,8 @@
 package com.engcode.usuario.controller;
 
 import com.engcode.usuario.business.UsuarioService;
+import com.engcode.usuario.business.dto.EnderecoDTO;
+import com.engcode.usuario.business.dto.TelefoneDTO;
 import com.engcode.usuario.business.dto.UsuarioDTO;
 import com.engcode.usuario.infrastructure.entity.Usuario;
 import com.engcode.usuario.infrastructure.security.JwtUtil;
@@ -50,7 +52,7 @@ public class UsuarioController {
 
     //Metodo para buscar o usuário por e-mail
     @GetMapping
-    public ResponseEntity<Usuario> buscaUsuarioPorEmail (@RequestParam ("email") String email) {
+    public ResponseEntity<UsuarioDTO> buscaUsuarioPorEmail (@RequestParam ("email") String email) {
         return ResponseEntity.ok(usuarioService.buscarUsuarioPorEmail(email));
     }
 
@@ -62,10 +64,21 @@ public class UsuarioController {
     }
 
     //Metodo para atualizar nome, email e senha
-    @PutMapping ()
+    @PutMapping
     public ResponseEntity<UsuarioDTO>  atualizaDadosDoUsuario (@RequestBody UsuarioDTO usuarioDTO, @RequestHeader ("Authorization") String token) {
         return ResponseEntity.ok(usuarioService.atualizaDaddosUsuario(token, usuarioDTO));
     }
 
+    //Metodo para atualizar dados do endereço.
+    @PutMapping ("/endereco")
+    public  ResponseEntity<EnderecoDTO> atualizaEndereco (@RequestBody EnderecoDTO enderecoDTO, @RequestParam ("id") Long id) {
+        return  ResponseEntity.ok(usuarioService.atualizaEndereco(id, enderecoDTO));
+    }
+
+    //Metodo para atualizar dados do telefone.
+    @PutMapping ("/telefone")
+    public  ResponseEntity<TelefoneDTO> atualizaTelefone (@RequestBody TelefoneDTO telefoneDTO, @RequestParam ("id") Long id) {
+        return  ResponseEntity.ok(usuarioService.atualizaTelefone(id, telefoneDTO));
+    }
 
 }

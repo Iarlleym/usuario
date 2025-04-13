@@ -135,5 +135,45 @@ public class UsuarioService {
 
     }
 
+    //Metodo para cadastro de novos endereços.
+    public EnderecoDTO cadastraEndereco (String token, EnderecoDTO enderecoDTO) {
+
+        //Extrai o email do token passado
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+
+        //Procura os dados de Usuario pelo email extraido do token
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado. " + email));
+
+        //Pega o enderecoDTO e o usuario_id e converte para enderecoEntity
+        Endereco enderecoEntity = usuarioConverter.paraEnderecoEntity( enderecoDTO , usuario.getId());
+
+        //Salvando o endereçoEntity
+        Endereco endereco = enderecoRepository.save(enderecoEntity);
+
+        //Retorna convertendo o enderecoEntity para enderecoDTO
+        return usuarioConverter.paraEnderecoDTO(endereco);
+
+    }
+
+    //Metodo para cadastro de novos telefones.
+    public TelefoneDTO cadastraTelefone (String token, TelefoneDTO telefoneDTO) {
+
+        //Extrai email do token
+        String email = jwtUtil.extrairEmailToken(token.substring(7));
+
+        //Procura os dados de Usuario pelo email extraido do token
+        Usuario usuario = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("E-mail não encontrado. " + email));
+
+        //Pega o telefoneDTO e o usuario_id e converte para telefoneEntity
+        Telefone telefoneEntity = usuarioConverter.paraTelefoneEntity( telefoneDTO, usuario.getId() );
+
+        //Salvando o TtelefoneEntity.
+        Telefone telefone = telefoneRepository.save(telefoneEntity);
+
+        //Retorna convertendo telefoneEntity para tefoneDTO
+        return usuarioConverter.paraTelefoneDTO(telefone);
+
+    }
+
 
 }

@@ -61,6 +61,11 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
+    //Metodo para atualizar nome, email e senha
+    @PutMapping ()
+    public ResponseEntity<UsuarioDTO>  atualizaDadosDoUsuario (@RequestBody UsuarioDTO usuarioDTO, @RequestHeader ("Authorization") String token) {
+        return ResponseEntity.ok(usuarioService.atualizaDaddosUsuario(token, usuarioDTO));
+    }
 
 
 }

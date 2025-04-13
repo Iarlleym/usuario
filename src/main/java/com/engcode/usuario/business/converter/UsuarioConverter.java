@@ -124,5 +124,23 @@ public class UsuarioConverter {
                 .build();
     }
 
+    //Metodo para fazer a conparação e atualizar nome, email, senha. sem endereços e telefones.
+
+    public Usuario upDateDeUsuario (UsuarioDTO usuarioDTO, Usuario usuario) {
+       return Usuario.builder()
+                .nome(usuarioDTO.getNome() != null ? usuarioDTO.getNome() : usuario.getNome())
+                //Faz um if. se o nome no usuarioDTO estiver vazio (Ou seja usuario não pasou uma senha nova) pega o nome no usuario entity.
+                //faz a mesma coisa para a senha e email, só os endereços e telefones que vão ter metodos proprios pq são lista.
+                .id(usuario.getId())
+                .senha(usuarioDTO.getSenha() != null ? usuarioDTO.getSenha() : usuario.getSenha())
+                .email(usuarioDTO.getEmail() != null ? usuarioDTO.getEmail() : usuario.getEmail())
+                .enderecos(usuario.getEnderecos())
+                .telefones(usuario.getTelefones())
+                .build();
+    }
+
+
+
+
 
 }

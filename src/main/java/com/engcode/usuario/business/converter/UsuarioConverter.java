@@ -9,7 +9,6 @@ import com.engcode.usuario.infrastructure.entity.Telefone;
 import com.engcode.usuario.infrastructure.entity.Usuario;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,8 +21,8 @@ public class UsuarioConverter {
                 .email(usuarioDTO.getEmail())
                 .senha(usuarioDTO.getSenha())
                 //Para contruir as listas de telefone e endereço foi feito os metodos para cada um.
-                .enderecos(paraListaEndereco(usuarioDTO.getEnderecos()))
-                .telefones(paraListaTelefone(usuarioDTO.getTelefones()))
+                .enderecos(usuarioDTO.getEnderecos() != null ? paraListaEndereco(usuarioDTO.getEnderecos()) : null)
+                .telefones(usuarioDTO.getTelefones() != null ? paraListaTelefone(usuarioDTO.getTelefones()) : null)
                 .build();
     }
 
@@ -78,8 +77,9 @@ public class UsuarioConverter {
                 .email(usuario.getEmail())
                 .senha(usuario.getSenha())
                 //Para contruir as listas de telefone e endereço foi feito os metodos para cada um.
-                .enderecos(paraListaEnderecoDTO(usuario.getEnderecos()))
-                .telefones(paraListaTelefoneDTO(usuario.getTelefones()))
+                //se o endereço passado for difeente de nulo seta o endereço, se nao seta null.
+                .enderecos( usuario.getEnderecos() != null ? paraListaEnderecoDTO(usuario.getEnderecos()) : null)
+                .telefones( usuario.getTelefones() != null ? paraListaTelefoneDTO(usuario.getTelefones()) : null)
                 .build();
     }
 

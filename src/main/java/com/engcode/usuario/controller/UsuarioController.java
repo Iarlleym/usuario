@@ -1,10 +1,11 @@
 package com.engcode.usuario.controller;
 
 import com.engcode.usuario.business.UsuarioService;
+import com.engcode.usuario.business.ViaCepService;
 import com.engcode.usuario.business.dto.EnderecoDTO;
 import com.engcode.usuario.business.dto.TelefoneDTO;
 import com.engcode.usuario.business.dto.UsuarioDTO;
-import com.engcode.usuario.infrastructure.entity.Usuario;
+import com.engcode.usuario.infrastructure.clients.ViaCepDTO;
 import com.engcode.usuario.infrastructure.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final AuthenticationManager authenticationManager; //Classe do spring security
     private final JwtUtil jwtUtil; //importa o metodo do jwtUtil
+    private final ViaCepService viaCepService;
 
     //Cria o metodo salvaUsuario e usa o metodo pra isso da UsuarioService.
     @PostMapping
@@ -93,4 +95,10 @@ public class UsuarioController {
         return  ResponseEntity.ok(usuarioService.cadastraTelefone(token, telefoneDTO));
     }
 
+    //Buscar informações do cep via api externa.
+    //Esse cep ele pode ser recebido via parametro ou do jeito que está direto no end point.
+    @GetMapping ("/endereco/{cep}")
+    public ResponseEntity<ViaCepDTO> buscarDadosCep (@PathVariable ("cep") String cep) {
+        return ResponseEntity.ok(viaCepService.buscarDadosEndereco(cep));
+    }
 }

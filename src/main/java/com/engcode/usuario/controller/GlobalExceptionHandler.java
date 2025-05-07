@@ -28,4 +28,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(unauthorizedException.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler (IllegalAccessError.class)
+    public ResponseEntity<String> handlerIllegalArgumentException (IllegalArgumentException illegalArgumentException) {
+        return new ResponseEntity<>(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+
 }

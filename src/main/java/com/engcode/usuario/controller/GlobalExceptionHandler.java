@@ -1,6 +1,7 @@
 package com.engcode.usuario.controller;
 
 import com.engcode.usuario.infrastructure.exceptions.ConflictException;
+import com.engcode.usuario.infrastructure.exceptions.IllegalArgumentExcepition;
 import com.engcode.usuario.infrastructure.exceptions.ResourceNotFoundException;
 import com.engcode.usuario.infrastructure.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(unauthorizedException.getMessage(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler (IllegalArgumentException.class)
+    @ExceptionHandler (IllegalArgumentExcepition.class)
     public ResponseEntity<String> handlerIllegalArgumentException (IllegalArgumentException illegalArgumentException) {
         return new ResponseEntity<>(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
 
 }

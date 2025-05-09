@@ -13,4 +13,5 @@ public class UsuarioApplication {
 		SpringApplication.run(UsuarioApplication.class, args);
 	}
 
+
 }

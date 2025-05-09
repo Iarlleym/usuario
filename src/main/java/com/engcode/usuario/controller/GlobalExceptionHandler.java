@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler (IllegalArgumentExcepition.class)
-    public ResponseEntity<String> handlerIllegalArgumentException (IllegalArgumentException illegalArgumentException) {
+    public ResponseEntity<String> handlerIllegalArgumentException (IllegalArgumentExcepition illegalArgumentException) {
         return new ResponseEntity<>(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

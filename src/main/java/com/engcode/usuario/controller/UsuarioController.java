@@ -7,6 +7,9 @@ import com.engcode.usuario.business.dto.TelefoneDTO;
 import com.engcode.usuario.business.dto.UsuarioDTO;
 import com.engcode.usuario.infrastructure.clients.ViaCepDTO;
 import com.engcode.usuario.infrastructure.security.JwtUtil;
+import com.engcode.usuario.infrastructure.security.SecurityConfig;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +20,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/usuario") //coloca qual uri para o banco de dados.
 @RequiredArgsConstructor
+//Anotações para a ducumentação pelo swagger
+//@Tag nome e descrição para localização em caso de mais de uma controller.
+@Tag(name = "Tarefas", description = "Cadastro de tarefas")
+//A documentação swagger não permite passar o token do header, pra contornar temos que usar duas anotações.
+@SecurityRequirement(name = SecurityConfig.SECURITY_SCHEME)
 public class UsuarioController {
 
     //Cria a dependencia para a classe UsarioService, para usar os metodos que tem nela.
